@@ -1,0 +1,40 @@
+{
+  "name": "LogicNomad",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"yarn dev:web\" \"yarn dev:api\"",
+    "dev:web": "yarn workspace web dev",
+    "dev:api": "yarn workspace api start:dev",
+    "build": "yarn build:engine && yarn build:ui && yarn build:api && yarn build:web",
+    "build:engine": "yarn workspace @logicnomad/engine build",
+    "build:ui": "yarn workspace @logicnomad/ui build",
+    "build:web": "yarn workspace web build",
+    "build:api": "yarn workspace api build",
+    "lint": "yarn lint:web && yarn lint:api && yarn lint:engine && yarn lint:ui",
+    "lint:web": "yarn workspace web lint",
+    "lint:api": "yarn workspace api lint",
+    "lint:engine": "yarn workspace @logicnomad/engine lint",
+    "lint:ui": "yarn workspace @logicnomad/ui lint",
+    "format": "prettier --write \"**/*.{ts,tsx,js,jsx,json,css,md}\"",
+    "clean": "yarn clean:web && yarn clean:api && yarn clean:engine && yarn clean:ui",
+    "clean:web": "rm -rf apps/web/dist apps/web/node_modules",
+    "clean:api": "rm -rf apps/api/dist apps/api/node_modules",
+    "clean:engine": "rm -rf packages/engine/dist packages/engine/node_modules",
+    "clean:ui": "rm -rf packages/ui/dist packages/ui/node_modules",
+    "clean:all": "rm -rf node_modules apps/*/node_modules packages/*/node_modules apps/*/dist packages/*/dist"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2",
+    "prettier": "^3.3.3",
+    "typescript": "~5.9.3"
+  },
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/kyuna0312/LogicNomad",
+  "author": "kyuna0312",
+  "license": "MIT"
+}

@@ -1,0 +1,60 @@
+{
+  "name": "@logicnomad/engine",
+  "version": "0.1.0",
+  "description": "Shared engine package for LogicNomad monorepo",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./types": {
+      "import": "./dist/types/index.js",
+      "require": "./dist/types/index.js",
+      "types": "./dist/types/index.d.ts"
+    },
+    "./utils": {
+      "import": "./dist/utils/index.js",
+      "require": "./dist/utils/index.js",
+      "types": "./dist/utils/index.d.ts"
+    },
+    "./constants": {
+      "import": "./dist/constants/index.js",
+      "require": "./dist/constants/index.js",
+      "types": "./dist/constants/index.d.ts"
+    },
+    "./flowgraph": {
+      "import": "./dist/flowgraph/index.js",
+      "require": "./dist/flowgraph/index.js",
+      "types": "./dist/flowgraph/index.d.ts"
+    },
+    "./executor": {
+      "import": "./dist/executor/index.js",
+      "require": "./dist/executor/index.js",
+      "types": "./dist/executor/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "lint": "eslint src --ext .ts",
+    "type-check": "tsc --noEmit"
+  },
+  "keywords": [
+    "logicnomad",
+    "shared",
+    "engine"
+  ],
+  "author": "kyuna0312",
+  "license": "MIT",
+  "private": true
+}

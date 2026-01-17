@@ -1,0 +1,42 @@
+{
+  "name": "@logicnomad/ui",
+  "version": "0.1.0",
+  "description": "Shared UI components for LogicNomad",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3"
+  },
+  "keywords": [
+    "logicnomad",
+    "ui",
+    "components",
+    "react"
+  ],
+  "author": "kyuna0312",
+  "license": "MIT",
+  "private": true
+}
