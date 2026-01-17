@@ -1,0 +1,79 @@
+# GraphQL Mutations for LogicNomad
+
+# ============================================
+# AUTHENTICATION MUTATIONS
+# ============================================
+
+# Register a new user
+mutation Register($input: RegisterInput!) {
+  register(input: $input) {
+    token
+    user {
+      id
+      email
+      username
+      createdAt
+    }
+  }
+}
+
+# Login
+mutation Login($input: LoginInput!) {
+  login(input: $input) {
+    token
+    user {
+      id
+      email
+      username
+      createdAt
+    }
+  }
+}
+
+# Forgot Password
+mutation ForgotPassword($input: ForgotPasswordInput!) {
+  forgotPassword(input: $input) {
+    message
+    token
+  }
+}
+
+# Reset Password
+mutation ResetPassword($input: ResetPasswordInput!) {
+  resetPassword(input: $input) {
+    message
+  }
+}
+
+# ============================================
+# USER MUTATIONS (Requires Authentication)
+# ============================================
+
+# Change Password
+mutation ChangePassword($input: ChangePasswordInput!) {
+  changePassword(input: $input) {
+    message
+  }
+}
+
+# Change Email
+mutation ChangeEmail($input: ChangeEmailInput!) {
+  changeEmail(input: $input) {
+    message
+    token
+  }
+}
+
+# Verify Email Change
+mutation VerifyEmailChange($input: VerifyEmailInput!) {
+  verifyEmailChange(input: $input) {
+    message
+  }
+}
+
+# Save Progress
+mutation SaveProgress($input: ProgressInput!) {
+  saveProgress(input: $input) {
+    message
+  }
+}

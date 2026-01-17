@@ -1,0 +1,27 @@
+# GraphQL Queries for LogicNomad
+
+# ============================================
+# AUTHENTICATION QUERIES
+# ============================================
+
+# Get current user (requires authentication)
+query GetMe {
+  me {
+    id
+    email
+    username
+    createdAt
+  }
+}
+
+# ============================================
+# USER QUERIES (Requires Authentication)
+# ============================================
+
+# Get user progress
+query GetProgress {
+  getProgress {
+    completedLevels
+    currentProgress
+  }
+}

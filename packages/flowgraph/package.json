@@ -1,0 +1,89 @@
+{
+  "name": "@logicnomad/flowgraph",
+  "version": "0.1.0",
+  "description": "Flowgraph editor component for LogicNomad",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js",
+      "default": "./dist/index.js"
+    },
+    "./components": {
+      "types": "./dist/components/index.d.ts",
+      "import": "./dist/components/index.js"
+    },
+    "./store": {
+      "types": "./dist/store/index.d.ts",
+      "import": "./dist/store/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "lint": "eslint src --ext .ts,.tsx",
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "yarn build"
+  },
+  "dependencies": {
+    "@logicnomad/reactflow": "*"
+  },
+  "peerDependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "zustand": "^5.0.2",
+    "@logicnomad/engine": "*",
+    "@logicnomad/ui": "*"
+  },
+  "peerDependenciesMeta": {
+    "react": {
+      "optional": false
+    },
+    "react-dom": {
+      "optional": false
+    },
+    "reactflow": {
+      "optional": false
+    },
+    "zustand": {
+      "optional": false
+    },
+    "@logicnomad/engine": {
+      "optional": false
+    },
+    "@logicnomad/ui": {
+      "optional": false
+    }
+  },
+  "devDependencies": {
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3"
+  },
+  "keywords": [
+    "logicnomad",
+    "flowgraph",
+    "flowchart",
+    "editor",
+    "react",
+    "reactflow"
+  ],
+  "author": "kyuna0312",
+  "license": "MIT",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kyuna0312/LogicNomad"
+  }
+}

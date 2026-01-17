@@ -1,10 +1,12 @@
 {
   "name": "@logicnomad/engine",
   "version": "0.1.0",
-  "description": "Shared engine package for LogicNomad monorepo",
+  "description": "Shared engine package for LogicNomad monorepo - Algorithm execution, flowgraph validation, and game logic",
   "main": "./dist/index.js",
   "module": "./dist/index.js",
   "types": "./dist/index.d.ts",
+  "type": "module",
+  "sideEffects": false,
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -13,48 +15,73 @@
       "default": "./dist/index.js"
     },
     "./types": {
+      "types": "./dist/types/index.d.ts",
       "import": "./dist/types/index.js",
-      "require": "./dist/types/index.js",
-      "types": "./dist/types/index.d.ts"
+      "require": "./dist/types/index.js"
+    },
+    "./types/flowgraph": {
+      "types": "./dist/types/flowgraph.d.ts",
+      "import": "./dist/types/flowgraph.js",
+      "require": "./dist/types/flowgraph.js"
+    },
+    "./types/game": {
+      "types": "./dist/types/game.d.ts",
+      "import": "./dist/types/game.js",
+      "require": "./dist/types/game.js"
     },
     "./utils": {
+      "types": "./dist/utils/index.d.ts",
       "import": "./dist/utils/index.js",
-      "require": "./dist/utils/index.js",
-      "types": "./dist/utils/index.d.ts"
+      "require": "./dist/utils/index.js"
     },
     "./constants": {
+      "types": "./dist/constants/index.d.ts",
       "import": "./dist/constants/index.js",
-      "require": "./dist/constants/index.js",
-      "types": "./dist/constants/index.d.ts"
+      "require": "./dist/constants/index.js"
     },
     "./flowgraph": {
+      "types": "./dist/flowgraph/index.d.ts",
       "import": "./dist/flowgraph/index.js",
-      "require": "./dist/flowgraph/index.js",
-      "types": "./dist/flowgraph/index.d.ts"
+      "require": "./dist/flowgraph/index.js"
     },
     "./executor": {
+      "types": "./dist/executor/index.d.ts",
       "import": "./dist/executor/index.js",
-      "require": "./dist/executor/index.js",
-      "types": "./dist/executor/index.d.ts"
-    }
+      "require": "./dist/executor/index.js"
+    },
+    "./executor/conditionEvaluator": {
+      "types": "./dist/executor/conditionEvaluator.d.ts",
+      "import": "./dist/executor/conditionEvaluator.js",
+      "require": "./dist/executor/conditionEvaluator.js"
+    },
+    "./package.json": "./package.json"
   },
   "files": [
     "dist",
-    "src"
+    "src",
+    "README.md"
   ],
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "clean": "rm -rf dist",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "lint": "eslint src --ext .ts",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "prepublishOnly": "yarn build"
   },
   "keywords": [
     "logicnomad",
     "shared",
-    "engine"
+    "engine",
+    "algorithm",
+    "flowgraph",
+    "game-engine"
   ],
   "author": "kyuna0312",
   "license": "MIT",
-  "private": true
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kyuna0312/LogicNomad"
+  }
 }

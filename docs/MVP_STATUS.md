@@ -26,10 +26,10 @@
 | Multiplayer | ✅ ОРОСОНГҮЙ | Single player only |
 | Leaderboard / Ranking | ✅ ОРОСОНГҮЙ | Phase 3-д |
 | Mobile application | ✅ ОРОСОНГҮЙ | Web only |
-| Backend / Authentication | ✅ ОРОСОНГҮЙ | Phase 2-д |
+| Backend / Authentication | ✅ ХЭРЭГЖИСЭН | Phase 2-д хэрэгжсэн (GraphQL + JWT) |
 | Code execution sandbox | ✅ ОРОСОНГҮЙ | Flowchart simulation only |
 | AI assistant | ✅ ОРОСОНГҮЙ | Not in scope |
-| GraphQL / OAuth | ✅ ОРОСОНГҮЙ | Not needed for MVP |
+| GraphQL / OAuth | ✅ ХЭРЭГЖИСЭН | GraphQL API хэрэгжсэн (OAuth хэрэггүй) |
 
 **Scope Management: 7/7 (100%)** ✅
 
@@ -39,7 +39,7 @@
 
 | Шалгуур | Статус | Тайлбар |
 |---------|--------|---------|
-| 10+ puzzle level ажилладаг | ✅ 11/10 | 11 level байна (1 tutorial + 10 puzzle) |
+| 10+ puzzle level ажилладаг | ✅ 15/10 | 15 level байна (1 tutorial + 14 puzzle) |
 | Flowchart → puzzle бүрэн холбогдсон | ✅ ДУУССАН | Executor engine холбогдсон |
 | Монгол хэрэглэгч ойлгож тоглож чаддаг | ✅ ДУУССАН | Бүх UI Монгол хэл дээр |
 | Public demo ашиглах боломжтой | ✅ БЭЛЭН | Deploy configuration бэлэн, GitHub Actions workflow ready |

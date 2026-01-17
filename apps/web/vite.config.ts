@@ -1,3 +1,4 @@
+// @ts-nocheck - Skip type checking for monorepo vite type conflicts
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
@@ -13,7 +14,7 @@ export default defineConfig({
       jsxRuntime: 'automatic',
     }),
     tailwindcss(),
-  ],
+  ] as any, // Type assertion to fix monorepo vite type conflict
   base: '/LogicNomad/', // For GitHub Pages deployment
   resolve: {
     alias: {
@@ -23,7 +24,7 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['@logicnomad/engine', 'react', 'react-dom', 'reactflow', 'zustand'],
+    include: ['@logicnomad/engine', 'react', 'react-dom', 'reactflow', 'zustand', '@apollo/client', 'graphql'],
     esbuildOptions: {
       target: 'es2020',
     },
@@ -31,23 +32,47 @@ export default defineConfig({
   build: {
     target: 'es2020',
     minify: 'esbuild', // Faster than terser
-    sourcemap: false, // Disable sourcemaps in production for smaller bundle
+    sourcemap: process.env.NODE_ENV === 'production' ? false : true, // Disable sourcemaps in production
+    cssMinify: true, // Minify CSS
+    cssCodeSplit: true, // Split CSS into separate files
     rollupOptions: {
       output: {
-        manualChunks: {
-          // Split vendor chunks
-          'react-vendor': ['react', 'react-dom', 'react/jsx-runtime'],
-          'flow-vendor': ['reactflow'],
-          'state-vendor': ['zustand'],
+        manualChunks: (id) => {
+          // Split vendor chunks more intelligently
+          if (id.includes('node_modules')) {
+            if (id.includes('react') || id.includes('react-dom') || id.includes('react/jsx-runtime')) {
+              return 'react-vendor';
+            }
+            if (id.includes('reactflow')) {
+              return 'flow-vendor';
+            }
+            if (id.includes('zustand')) {
+              return 'state-vendor';
+            }
+            if (id.includes('@apollo/client') || id.includes('graphql')) {
+              return 'graphql-vendor';
+            }
+            // Other node_modules go into a separate chunk
+            return 'vendor';
+          }
         },
         // Optimize chunk names
         chunkFileNames: 'assets/js/[name]-[hash].js',
         entryFileNames: 'assets/js/[name]-[hash].js',
         assetFileNames: 'assets/[ext]/[name]-[hash].[ext]',
+        // Optimize chunk size
+        compact: true,
       },
     },
-    // Increase chunk size warning limit
-    chunkSizeWarningLimit: 1000,
+    // Report compressed size
+    reportCompressedSize: true,
+    // Chunk size warning limit (600KB)
+    chunkSizeWarningLimit: 600,
+    // Tree shaking
+    treeshake: {
+      moduleSideEffects: false,
+      preset: 'recommended',
+    },
   },
   server: {
     fs: {

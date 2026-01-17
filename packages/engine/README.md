@@ -1,73 +1,109 @@
 # @logicnomad/engine
 
-Shared engine package for LogicNomad monorepo. Contains common types, utilities, and constants used across applications.
+Shared engine package for LogicNomad monorepo. Contains algorithm execution, flowgraph validation, and game logic.
 
 ## Installation
 
-This package is automatically available in the monorepo workspace. No installation needed.
+This package is part of the LogicNomad monorepo and is automatically available to workspace packages.
+
+```bash
+# From workspace root
+yarn workspace @logicnomad/engine build
+```
 
 ## Usage
 
-### In API (NestJS)
+### Main Import
 
 ```typescript
-import { createSuccessResponse, ApiResponse, User } from '@logicnomad/engine';
-
-@Get()
-getUsers(): ApiResponse<User[]> {
-  const users = []; // your logic
-  return createSuccessResponse(users, 'Users retrieved successfully');
-}
+import {
+  executeAlgorithm,
+  validateFlowgraph,
+  type GameState,
+  type PuzzleLevel,
+} from '@logicnomad/engine';
 ```
 
-### In Web (React)
+### Subpath Imports (Recommended for Tree-Shaking)
 
 ```typescript
-import { isValidEmail, formatDate, API_ENDPOINTS } from '@logicnomad/engine';
+// Types only
+import type { GameState, PuzzleLevel } from '@logicnomad/engine/types';
 
-// Use utilities
-const email = 'user@example.com';
-if (isValidEmail(email)) {
-  // valid email
-}
+// Flowgraph utilities
+import { validateFlowgraph, flowgraphToExecutionOrder } from '@logicnomad/engine/flowgraph';
 
-// Use constants
-fetch(`${API_ENDPOINTS.USERS}`)
+// Algorithm execution
+import { executeAlgorithm } from '@logicnomad/engine/executor';
+
+// Condition evaluation
+import { evaluateCondition } from '@logicnomad/engine/executor/conditionEvaluator';
 ```
 
-## Structure
+## API
 
-```
-src/
-├── types/        # Shared TypeScript types
-├── utils/        # Utility functions
-├── constants/    # Shared constants
-└── index.ts      # Main export file
-```
+### Flowgraph
+
+- `validateFlowgraph(flowgraph: Flowgraph): ValidationResult` - Validate flowgraph structure
+- `flowgraphToExecutionOrder(flowgraph: Flowgraph): ExecutionNode[]` - Convert flowgraph to execution order
+
+### Executor
+
+- `executeAlgorithm(flowgraph: Flowgraph, gameState: GameState, level: PuzzleLevel): Promise<ExecutionResult>` - Execute algorithm on game state
+- `evaluateCondition(condition: string, gameState: GameState): boolean` - Evaluate condition in game state
+
+### Types
+
+- `GameState` - Current game state
+- `PuzzleLevel` - Level definition
+- `Flowgraph` - Flowchart structure
+- `FlowNode` - Flowchart node
+- `FlowEdge` - Flowchart edge
+- `ExecutionResult` - Algorithm execution result
 
 ## Development
 
 ```bash
-# Build the package
-yarn workspace @logicnomad/engine build
+# Build
+yarn build
 
 # Watch mode
-yarn workspace @logicnomad/engine dev
+yarn dev
 
 # Type check
-yarn workspace @logicnomad/engine type-check
+yarn type-check
+
+# Lint
+yarn lint
+
+# Clean
+yarn clean
+```
+
+## Package Structure
+
+```
+engine/
+├── src/
+│   ├── types/          # TypeScript type definitions
+│   ├── flowgraph/      # Flowgraph validation and execution
+│   ├── executor/       # Algorithm execution engine
+│   ├── utils/          # Utility functions
+│   └── constants/      # Shared constants
+└── dist/               # Compiled output
 ```
 
 ## Exports
 
-The package exports can be imported in several ways:
+The package supports both main import and subpath imports for optimal tree-shaking:
 
-```typescript
-// Main exports (everything)
-import { User, createSuccessResponse, API_ENDPOINTS } from '@logicnomad/engine';
+- `@logicnomad/engine` - Main entry point
+- `@logicnomad/engine/types` - Type definitions
+- `@logicnomad/engine/flowgraph` - Flowgraph utilities
+- `@logicnomad/engine/executor` - Algorithm execution
+- `@logicnomad/engine/utils` - Utility functions
+- `@logicnomad/engine/constants` - Constants
 
-// Specific exports
-import { User, ApiResponse } from '@logicnomad/engine/types';
-import { isValidEmail, formatDate } from '@logicnomad/engine/utils';
-import { API_ENDPOINTS, HTTP_STATUS } from '@logicnomad/engine/constants';
-```
+## License
+
+MIT

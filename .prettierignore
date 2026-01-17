@@ -1,8 +1,27 @@
-node_modules
-dist
-build
-coverage
-*.lock
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Production builds
+dist/
+build/
+*.tsbuildinfo
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+.env.production
+
+# Logs
+*.log
+
+# Package manager locks
 yarn.lock
 package-lock.json
 pnpm-lock.yaml
+
+# Generated files
+**/schema.gql
+coverage/

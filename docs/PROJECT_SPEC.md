@@ -199,11 +199,12 @@ logic-nomad/
 
 ## 📚 Documentation
 
+- [README.md](./README.md) - Documentation index and overview
+- [DEVELOPMENT.md](./DEVELOPMENT.md) - Development guide
+- [DEPLOYMENT.md](./DEPLOYMENT.md) - Deployment guide
+- [OPTIMIZATION.md](./OPTIMIZATION.md) - Performance optimizations
 - [ROADMAP.md](./ROADMAP.md) - Full development roadmap
 - [MVP_STATUS.md](./MVP_STATUS.md) - MVP completion status
-- [OPTIMIZATION.md](./OPTIMIZATION.md) - Performance optimizations
-- [DEPLOYMENT.md](./DEPLOYMENT.md) - Deployment guide
-- [DEVELOPMENT.md](./DEVELOPMENT.md) - Development guide
 
 ---
 

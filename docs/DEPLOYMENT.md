@@ -328,6 +328,7 @@ npx serve -s dist -l 3000
 
 ## 📚 Related Documentation
 
+- [README.md](./README.md) - Documentation index
 - [DEVELOPMENT.md](./DEVELOPMENT.md) - Development setup
 - [OPTIMIZATION.md](./OPTIMIZATION.md) - Performance optimizations
 - [MVP_STATUS.md](./MVP_STATUS.md) - MVP completion status

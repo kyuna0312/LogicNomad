@@ -10,6 +10,22 @@ import type {
   Flowgraph,
 } from '@logicnomad/engine';
 
+// GraphQL Response Types
+interface ProgressType {
+  completedLevels: string[];
+  currentProgress: number;
+}
+
+interface GetProgressResponse {
+  getProgress: ProgressType;
+}
+
+interface SaveProgressResponse {
+  saveProgress: {
+    message: string;
+  };
+}
+
 interface GameStore {
   // Current level
   currentLevel: PuzzleLevel | null;
@@ -111,8 +127,40 @@ export const useGameStore = create<GameStore>((set, get) => ({
     }
   },
 
-  loadProgress: () => {
+  loadProgress: async () => {
     try {
+      // Try to load from GraphQL API first if authenticated
+      const authToken = localStorage.getItem('auth_token');
+      if (authToken) {
+        try {
+          const { GET_PROGRESS_QUERY } = await import('../graphql/users/queries');
+          const { apolloClient } = await import('../lib/apollo');
+          const { data } = await apolloClient.query<GetProgressResponse>({
+            query: GET_PROGRESS_QUERY,
+            fetchPolicy: 'network-only',
+          });
+
+          if (data?.getProgress) {
+            set({
+              completedLevels: data.getProgress.completedLevels || [],
+              currentProgress: data.getProgress.currentProgress || 0,
+            });
+            // Also save to localStorage as backup
+            localStorage.setItem('logicnomad_progress', JSON.stringify({
+              completedLevels: data.getProgress.completedLevels || [],
+              currentProgress: data.getProgress.currentProgress || 0,
+            }));
+            return;
+          }
+        } catch (apiError) {
+          // Fall back to localStorage if API fails
+          if (import.meta.env.DEV) {
+            console.error('Failed to load progress from GraphQL:', apiError);
+          }
+        }
+      }
+
+      // Fall back to localStorage
       const saved = localStorage.getItem('logicnomad_progress');
       if (saved) {
         const progress = JSON.parse(saved);
@@ -122,11 +170,14 @@ export const useGameStore = create<GameStore>((set, get) => ({
         });
       }
     } catch (error) {
-      console.error('Failed to load progress:', error);
+      // Silently fail in production, log in development
+      if (import.meta.env.DEV) {
+        console.error('Failed to load progress:', error);
+      }
     }
   },
 
-  saveProgress: () => {
+  saveProgress: async () => {
     try {
       const { completedLevels, currentProgress } = get();
       const progress = {
@@ -134,9 +185,37 @@ export const useGameStore = create<GameStore>((set, get) => ({
         currentProgress,
         savedAt: new Date().toISOString(),
       };
+      
+      // Save to localStorage (always)
       localStorage.setItem('logicnomad_progress', JSON.stringify(progress));
+
+      // If authenticated, also save to GraphQL API
+      const authToken = localStorage.getItem('auth_token');
+      if (authToken) {
+        try {
+          const { SAVE_PROGRESS_MUTATION } = await import('../graphql/users/mutations');
+          const { apolloClient } = await import('../lib/apollo');
+          await apolloClient.mutate<SaveProgressResponse>({
+            mutation: SAVE_PROGRESS_MUTATION,
+            variables: {
+              input: {
+                completedLevels,
+                currentProgress,
+              },
+            },
+          });
+        } catch (apiError) {
+          // Silently fail API sync, localStorage is primary
+          if (import.meta.env.DEV) {
+            console.error('Failed to sync progress to GraphQL:', apiError);
+          }
+        }
+      }
     } catch (error) {
-      console.error('Failed to save progress:', error);
+      // Silently fail in production, log in development
+      if (import.meta.env.DEV) {
+        console.error('Failed to save progress:', error);
+      }
     }
   },
 }));

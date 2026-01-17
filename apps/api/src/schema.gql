@@ -1,0 +1,79 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthResponse {
+  token: String!
+  user: UserType!
+}
+
+input ChangeEmailInput {
+  newEmail: String!
+}
+
+input ChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
+
+input ForgotPasswordInput {
+  email: String!
+}
+
+input LoginInput {
+  email: String!
+  password: String!
+}
+
+type MessageResponse {
+  message: String!
+  token: String
+}
+
+type Mutation {
+  changeEmail(input: ChangeEmailInput!): MessageResponse!
+  changePassword(input: ChangePasswordInput!): MessageResponse!
+  forgotPassword(input: ForgotPasswordInput!): MessageResponse!
+  login(input: LoginInput!): AuthResponse!
+  register(input: RegisterInput!): AuthResponse!
+  resetPassword(input: ResetPasswordInput!): MessageResponse!
+  saveProgress(input: ProgressInput!): MessageResponse!
+  verifyEmailChange(input: VerifyEmailInput!): MessageResponse!
+}
+
+input ProgressInput {
+  completedLevels: [String!]!
+  currentProgress: Float
+}
+
+type ProgressType {
+  completedLevels: [String!]!
+  currentProgress: Float!
+}
+
+type Query {
+  getProgress: ProgressType!
+  me: UserType!
+}
+
+input RegisterInput {
+  email: String!
+  password: String!
+  username: String
+}
+
+input ResetPasswordInput {
+  newPassword: String!
+  token: String!
+}
+
+type UserType {
+  createdAt: String
+  email: String!
+  id: String!
+  username: String
+}
+
+input VerifyEmailInput {
+  token: String!
+}

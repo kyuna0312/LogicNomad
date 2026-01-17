@@ -56,7 +56,14 @@ logic-nomad/
 │   │   │   └── data/      # Level data
 │   │   │       └── levels.ts
 │   │   └── vite.config.ts
-│   └── api/              # Backend (NestJS) - Phase 2
+│   └── api/              # Backend (NestJS + GraphQL)
+│       ├── src/
+│       │   ├── auth/     # Authentication module
+│       │   ├── users/    # User management
+│       │   ├── graphql/  # GraphQL resolvers, types, inputs
+│       │   ├── entities/ # TypeORM entities
+│       │   └── common/   # Guards, decorators, pipes
+│       └── package.json
 ├── packages/
 │   ├── engine/           # Core algorithm & flowgraph logic
 │   │   ├── src/
@@ -235,6 +242,7 @@ yarn build
 
 ## 📚 Documentation
 
+- [README.md](./README.md) - Documentation index and overview
 - [ROADMAP.md](./ROADMAP.md) - Full development roadmap (5 weeks completed)
 - [MVP_STATUS.md](./MVP_STATUS.md) - MVP completion status (100% complete)
 - [OPTIMIZATION.md](./OPTIMIZATION.md) - Performance optimizations guide

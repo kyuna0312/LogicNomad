@@ -11,6 +11,9 @@ coverage/
 dist/
 build/
 *.tsbuildinfo
+**/tsconfig.tsbuildinfo
+**/node_modules/.tmp/
+**/.tmp/
 
 # Environment variables
 .env

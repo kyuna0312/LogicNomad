@@ -1,0 +1,110 @@
+# Test GraphQL Mutations for LogicNomad
+
+# Register a new user
+mutation RegisterUser {
+  register(input: {
+    email: "test@example.com"
+    password: "Test123456"
+    username: "TestUser"
+  }) {
+    token
+    user {
+      id
+      email
+      username
+      createdAt
+    }
+  }
+}
+
+# Login
+mutation LoginUser {
+  login(input: {
+    email: "test@example.com"
+    password: "Test123456"
+  }) {
+    token
+    user {
+      id
+      email
+      username
+    }
+  }
+}
+
+# Forgot Password
+mutation ForgotPassword {
+  forgotPassword(input: {
+    email: "test@example.com"
+  }) {
+    message
+    token
+  }
+}
+
+# Reset Password (use token from forgotPassword)
+mutation ResetPassword {
+  resetPassword(input: {
+    token: "YOUR_RESET_TOKEN_HERE"
+    newPassword: "NewPassword123"
+  }) {
+    message
+  }
+}
+
+# Get current user (requires authentication)
+query GetMe {
+  me {
+    id
+    email
+    username
+    createdAt
+  }
+}
+
+# Change Password (requires authentication)
+mutation ChangePassword {
+  changePassword(input: {
+    currentPassword: "Test123456"
+    newPassword: "NewPassword123"
+  }) {
+    message
+  }
+}
+
+# Change Email (requires authentication)
+mutation ChangeEmail {
+  changeEmail(input: {
+    newEmail: "newemail@example.com"
+  }) {
+    message
+    token
+  }
+}
+
+# Verify Email Change (requires authentication)
+mutation VerifyEmailChange {
+  verifyEmailChange(input: {
+    token: "YOUR_EMAIL_CHANGE_TOKEN_HERE"
+  }) {
+    message
+  }
+}
+
+# Get Progress (requires authentication)
+query GetProgress {
+  getProgress {
+    completedLevels
+    currentProgress
+  }
+}
+
+# Save Progress (requires authentication)
+mutation SaveProgress {
+  saveProgress(input: {
+    completedLevels: ["level1", "level2"]
+    currentProgress: 50
+  }) {
+    message
+  }
+}
