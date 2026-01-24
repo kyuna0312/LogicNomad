@@ -63,6 +63,7 @@
   ],
   "scripts": {
     "build": "tsc",
+    "build:clean": "yarn clean && yarn build",
     "dev": "tsc --watch",
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "lint": "eslint src --ext .ts",

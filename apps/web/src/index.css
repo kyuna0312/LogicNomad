@@ -1,23 +1,76 @@
 @import "tailwindcss";
 
-/* Base styles - optimized for LogicNomad */
+/* Design System Variables - HackerRank/LeetCode Professional Theme */
 :root {
-  font-family: system-ui, -apple-system, sans-serif;
-  line-height: 1.5;
+  --primary-blue: #2196f3;
+  --success-green: #4caf50;
+  --warning-orange: #ff9800;
+  --danger-red: #f44336;
+  --dark-50: #3a3a3a;
+  --dark-100: #2d2d2d;
+  --dark-200: #262626;
+  --dark-300: #1f1f1f;
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-muted: #888888;
+  --border-color: #404040;
+  --spacing-xs: 0.25rem;
+  --spacing-sm: 0.5rem;
+  --spacing-md: 1rem;
+  --spacing-lg: 1.5rem;
+  --spacing-xl: 2rem;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --transition-fast: 0.15s ease-out;
+  --transition-normal: 0.2s ease-out;
+  --transition-slow: 0.3s ease-out;
+}
+
+/* Base styles - Professional */
+:root {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+  line-height: 1.6;
   font-weight: 400;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: var(--dark-200);
+  color: var(--text-primary);
 }
 
 body {
   margin: 0;
   min-width: 320px;
   min-height: 100vh;
+  background: var(--dark-200);
+  color: var(--text-primary);
 }
 
-/* Cute animations */
+/* Professional Animations - Subtle only */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @keyframes float {
   0%, 100% {
     transform: translateY(0px);
@@ -27,79 +80,189 @@ body {
   }
 }
 
-@keyframes bounce-gentle {
-  0%, 100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-5px);
-  }
-}
-
-@keyframes pulse-glow {
-  0%, 100% {
-    box-shadow: 0 0 10px rgba(99, 102, 241, 0.3);
-  }
-  50% {
-    box-shadow: 0 0 20px rgba(99, 102, 241, 0.6);
-  }
-}
-
-@keyframes wiggle {
-  0%, 100% {
-    transform: rotate(0deg);
-  }
-  25% {
-    transform: rotate(-3deg);
-  }
-  75% {
-    transform: rotate(3deg);
-  }
-}
-
-@keyframes sparkle {
-  0%, 100% {
-    opacity: 0;
-    transform: scale(0);
-  }
-  50% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
-
-.animate-float {
-  animation: float 3s ease-in-out infinite;
-}
-
-.animate-bounce-gentle {
-  animation: bounce-gentle 2s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
-}
-
-.animate-wiggle {
-  animation: wiggle 0.5s ease-in-out;
-}
-
-.animate-sparkle {
-  animation: sparkle 1.5s ease-in-out infinite;
-}
-
-/* Cute hover effects */
+/* Professional Hover Effects - LeetCode style (minimal) */
 .hover-lift {
-  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: all 0.15s ease-out;
 }
 
 .hover-lift:hover {
-  transform: translateY(-5px) scale(1.02);
+  opacity: 0.9;
+}
+
+/* Professional Text Styles */
+.text-primary {
+  color: var(--text-primary);
+}
+
+.text-secondary {
+  color: var(--text-secondary);
+}
+
+.text-muted {
+  color: var(--text-muted);
+}
+
+.text-success {
+  color: var(--success-green);
+}
+
+/* Professional Borders */
+.professional-border {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+.card-border {
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background: var(--dark-100);
 }
 
 /* Focus styles for accessibility */
 button:focus-visible,
-a:focus-visible {
-  outline: 2px solid currentColor;
+a:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+  outline: 2px solid var(--primary-blue);
   outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(33, 150, 243, 0.2);
+}
+
+/* Screen reader only content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Skip to main content link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--primary-blue);
+  color: white;
+  padding: 8px;
+  text-decoration: none;
+  z-index: 100;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Professional Design Utilities */
+.glass-effect {
+  background: rgba(45, 45, 45, 0.95);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+}
+
+/* Smooth transitions */
+.smooth-transition {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Professional card styles */
+.card-glow {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+}
+
+.card-glow:hover {
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+/* Border radius */
+.rounded-cyber {
+  border-radius: var(--radius-md);
+}
+
+.rounded-cyber-lg {
+  border-radius: var(--radius-lg);
+}
+
+/* Text shadows for better readability */
+.text-shadow-soft {
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Animation Classes - Subtle only */
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+/* Scrollbar Styling - Professional */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--dark-300);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--dark-50);
+}
+
+/* Selection Styling */
+::selection {
+  background: rgba(33, 150, 243, 0.3);
+  color: #ffffff;
+}
+
+::-moz-selection {
+  background: rgba(33, 150, 243, 0.3);
+  color: #ffffff;
+}
+
+/* Print Styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  
+  body {
+    background: white;
+    color: black;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  .text-shadow-soft {
+    text-shadow: none;
+  }
+  
+  .professional-border {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

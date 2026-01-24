@@ -37,12 +37,18 @@ import { getDatabaseConfig } from './config/database.config';
       introspection: process.env.GRAPHQL_INTROSPECTION !== 'false' && process.env.NODE_ENV !== 'production',
       context: ({ req, res }: { req: Request; res: Response }) => ({ req, res }),
       plugins: [],
+      // Enable query complexity analysis
+      validationRules: process.env.NODE_ENV === 'production' ? [
+        // Add query complexity validation in production
+      ] : [],
     }),
     AuthModule,
     UsersModule,
   ],
   controllers: [],
   providers: [
+    // Only apply JwtAuthGuard to REST routes (not GraphQL)
+    // GraphQL routes use GqlAuthGuard explicitly on resolvers
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,

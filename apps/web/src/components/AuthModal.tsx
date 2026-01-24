@@ -1,8 +1,9 @@
 /**
  * Authentication modal component
+ * Optimized with memo and useCallback
  */
 
-import { useState, memo } from 'react';
+import { useState, memo, useCallback } from 'react';
 import { useAuthStore } from '../store/authStore';
 import { Button, Card, Alert } from '@logicnomad/ui';
 
@@ -26,9 +27,7 @@ export const AuthModal = memo(({ isOpen, onClose, initialMode = 'login' }: AuthM
 
   const { login, register, forgotPassword, resetPassword } = useAuthStore();
 
-  if (!isOpen) return null;
-
-  const handleLogin = async (e: React.FormEvent) => {
+  const handleLogin = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -45,9 +44,9 @@ export const AuthModal = memo(({ isOpen, onClose, initialMode = 'login' }: AuthM
     } finally {
       setLoading(false);
     }
-  };
+  }, [login, onClose]);
 
-  const handleRegister = async (e: React.FormEvent) => {
+  const handleRegister = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -70,9 +69,9 @@ export const AuthModal = memo(({ isOpen, onClose, initialMode = 'login' }: AuthM
     } finally {
       setLoading(false);
     }
-  };
+  }, [register, onClose]);
 
-  const handleForgotPassword = async (e: React.FormEvent) => {
+  const handleForgotPassword = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
@@ -87,9 +86,9 @@ export const AuthModal = memo(({ isOpen, onClose, initialMode = 'login' }: AuthM
     } finally {
       setLoading(false);
     }
-  };
+  }, [forgotPassword]);
 
-  const handleResetPassword = async (e: React.FormEvent) => {
+  const handleResetPassword = useCallback(async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
 
@@ -112,7 +111,9 @@ export const AuthModal = memo(({ isOpen, onClose, initialMode = 'login' }: AuthM
     } finally {
       setLoading(false);
     }
-  };
+  }, [resetPassword]);
+
+  if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -401,3 +402,6 @@ export const AuthModal = memo(({ isOpen, onClose, initialMode = 'login' }: AuthM
 });
 
 AuthModal.displayName = 'AuthModal';
+
+// Default export for lazy loading compatibility
+export default AuthModal;

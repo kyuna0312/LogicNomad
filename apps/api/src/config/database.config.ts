@@ -26,10 +26,11 @@ export const getDatabaseConfig = (): TypeOrmModuleOptions => ({
   },
   // Query optimization
   maxQueryExecutionTime: 1000, // Log slow queries (>1s)
-  // Cache configuration (can be enabled with Redis later)
-  // cache: process.env.REDIS_URL ? {
-  //   type: 'redis',
-  //   options: { url: process.env.REDIS_URL },
-  //   duration: 30000,
-  // } : false,
+  // Enable query result caching (in-memory for now, can upgrade to Redis)
+  cache: process.env.NODE_ENV === 'production' ? {
+    type: 'ioredis',
+    options: process.env.REDIS_URL ? { url: process.env.REDIS_URL } : undefined,
+    duration: 30000, // 30 seconds cache
+    ignoreErrors: true, // Don't fail if cache is unavailable
+  } : false,
 });

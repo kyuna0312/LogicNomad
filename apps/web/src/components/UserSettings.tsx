@@ -265,3 +265,6 @@ export const UserSettings = memo(({ isOpen, onClose }: UserSettingsProps) => {
 });
 
 UserSettings.displayName = 'UserSettings';
+
+// Default export for lazy loading compatibility
+export default UserSettings;

@@ -54,16 +54,16 @@ const GameCell = memo(({ cell, row, col, characterPos, characterDir, goalPos }: 
 
   return (
     <div
-      className={`w-14 h-14 flex items-center justify-center rounded-xl transition-all duration-300 transform hover:scale-110 ${
+      className={`w-14 h-14 flex items-center justify-center rounded-cyber smooth-transition transform hover:scale-110 ${
         isCharacterHere
-          ? 'bg-gradient-to-br from-blue-400 via-indigo-500 to-purple-500 shadow-2xl scale-125 border-3 border-blue-600 z-10 animate-pulse-glow'
+          ? 'bg-gradient-to-br from-neonCyan-400 via-neonPink-500 to-neonCyan-500 shadow-2xl scale-125 border-2 border-neonCyan-400 z-10 animate-pulse-glow card-glow'
           : isGoalHere
-          ? 'bg-gradient-to-br from-yellow-300 via-amber-400 to-orange-400 shadow-xl border-3 border-yellow-500 animate-bounce-gentle'
+          ? 'bg-gradient-to-br from-yellow-400 via-amber-500 to-orange-500 shadow-xl border-2 border-yellow-400 animate-bounce-gentle card-glow'
           : cell.type === 'wall'
-          ? 'bg-gradient-to-br from-gray-700 to-gray-900 border-2 border-gray-900 shadow-inner'
+          ? 'bg-gradient-to-br from-gray-800 to-gray-900 border-2 border-gray-700 shadow-inner opacity-80'
           : cell.type === 'start'
-          ? 'bg-gradient-to-br from-green-200 to-emerald-300 border-2 border-green-400 shadow-md'
-          : 'bg-white/90 border-2 border-purple-200 hover:border-purple-300 shadow-sm hover:shadow-md'
+          ? 'bg-gradient-to-br from-green-400 to-emerald-500 border-2 border-green-400 shadow-md card-glow'
+          : 'glass-effect border-2 border-neonCyan-500/20 hover:border-neonCyan-500/50 shadow-sm hover:shadow-md'
       }`}
     >
       {content}
@@ -95,7 +95,7 @@ export const GameBoard = memo(() => {
 
   return (
     <div className="flex flex-col items-center">
-      <div className="grid gap-2 p-6 bg-gradient-to-br from-purple-50 via-pink-50 to-blue-50 rounded-2xl shadow-xl border-2 border-purple-200">
+      <div className="grid gap-2 p-6 glass-effect rounded-cyber-lg shadow-xl border-2 border-neonCyan-500/30 card-glow">
         {grid.map((row: GameCell[], rowIndex: number) => (
           <div key={rowIndex} className="flex gap-2">
             {row.map((cell: GameCell, colIndex: number) => (
@@ -113,26 +113,26 @@ export const GameBoard = memo(() => {
         ))}
       </div>
 
-      <div className="mt-6 bg-white/90 backdrop-blur-sm rounded-2xl shadow-lg p-5 border-2 border-purple-200 w-full max-w-md hover-lift">
+      <div className="mt-6 glass-effect rounded-cyber-lg shadow-lg p-5 border-2 border-neonPink-500/30 w-full max-w-md hover-lift card-glow">
         <div className="grid grid-cols-3 gap-4 text-center">
-          <div className="transform hover:scale-110 transition-transform duration-200">
-            <div className="text-lg mb-1">📊</div>
-            <div className="text-xs text-gray-500 mb-1 font-medium">Алхам</div>
-            <div className="text-lg font-bold bg-gradient-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+          <div className="transform hover:scale-110 smooth-transition">
+            <div className="text-lg mb-1 animate-bounce-gentle">📊</div>
+            <div className="text-xs text-neonCyan-300 mb-1 font-medium text-shadow-soft">Алхам</div>
+            <div className="text-lg font-bold gradient-text">
               {stepCount} / {maxSteps}
             </div>
           </div>
-          <div className="transform hover:scale-110 transition-transform duration-200">
-            <div className="text-lg mb-1">📍</div>
-            <div className="text-xs text-gray-500 mb-1 font-medium">Байрлал</div>
-            <div className="text-lg font-bold bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent">
+          <div className="transform hover:scale-110 smooth-transition">
+            <div className="text-lg mb-1 animate-bounce-gentle">📍</div>
+            <div className="text-xs text-neonCyan-300 mb-1 font-medium text-shadow-soft">Байрлал</div>
+            <div className="text-lg font-bold text-neonPink-400 text-shadow-neon">
               ({character.position.x}, {character.position.y})
             </div>
           </div>
-          <div className="transform hover:scale-110 transition-transform duration-200">
-            <div className="text-lg mb-1">🧭</div>
-            <div className="text-xs text-gray-500 mb-1 font-medium">Чиглэл</div>
-            <div className="text-2xl font-bold text-indigo-600">
+          <div className="transform hover:scale-110 smooth-transition">
+            <div className="text-lg mb-1 animate-bounce-gentle">🧭</div>
+            <div className="text-xs text-neonCyan-300 mb-1 font-medium text-shadow-soft">Чиглэл</div>
+            <div className="text-2xl font-bold text-neonCyan-400 text-shadow-neon animate-bounce-gentle">
               {directionArrows[character.direction]}
             </div>
           </div>

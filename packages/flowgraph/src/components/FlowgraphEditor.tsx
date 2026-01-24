@@ -25,8 +25,23 @@ import { NodeConfigPanel } from './NodeConfigPanel';
 import { Button } from '@logicnomad/ui';
 
 // Use optimized CustomNode from @logicnomad/reactflow
+// Define nodeTypes outside component to prevent recreation on each render
 const nodeTypes = {
   default: CustomNode,
+};
+
+// Define defaultEdgeOptions outside component to prevent recreation on each render
+const defaultEdgeOptions = {
+  type: 'smoothstep',
+  animated: true,
+  style: {
+    strokeWidth: 3,
+    stroke: '#a855f7',
+  },
+  markerEnd: {
+    type: MarkerType.ArrowClosed,
+    color: '#a855f7',
+  },
 };
 
 export const FlowgraphEditor = memo(() => {
@@ -103,19 +118,6 @@ export const FlowgraphEditor = memo(() => {
       window.removeEventListener('keydown', handleKeyDown as any);
     };
   }, [handleKeyDown]);
-
-  const defaultEdgeOptions = {
-    type: 'smoothstep',
-    animated: true,
-    style: {
-      strokeWidth: 3,
-      stroke: '#a855f7',
-    },
-    markerEnd: {
-      type: MarkerType.ArrowClosed,
-      color: '#a855f7',
-    },
-  };
 
   return (
     <div className="w-full h-full relative">

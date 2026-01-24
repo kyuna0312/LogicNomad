@@ -2,7 +2,7 @@
  * Level list component
  */
 
-import { memo, useMemo, useState } from 'react';
+import { memo, useMemo, useState, useCallback } from 'react';
 import { levels } from '../data/levels';
 import { Button, Badge, Card } from '@logicnomad/ui';
 
@@ -54,41 +54,47 @@ export const LevelList = memo(({ onStartLevel, completedLevels }: LevelListProps
     };
   }, []);
 
+  // Memoize filter handlers to prevent unnecessary re-renders
+  const handleFilterChange = useCallback((newFilter: 'all' | 'easy' | 'medium' | 'hard') => {
+    setFilter(newFilter);
+  }, []);
+
+  // Memoize level click handler
+  const handleLevelClick = useCallback((levelId: string) => {
+    onStartLevel(levelId);
+  }, [onStartLevel]);
+
   return (
     <div>
-      {/* Filter Buttons */}
+      {/* Filter Buttons - LeetCode style */}
       <div className="flex flex-wrap gap-2 mb-6">
         <Button
           size="sm"
           variant={filter === 'all' ? 'primary' : 'ghost'}
-          onClick={() => setFilter('all')}
-          className="hover-lift"
+          onClick={() => handleFilterChange('all')}
         >
-          🌟 Бүгд ({difficultyCounts.all})
+          All ({difficultyCounts.all})
         </Button>
         <Button
           size="sm"
           variant={filter === 'easy' ? 'success' : 'ghost'}
-          onClick={() => setFilter('easy')}
-          className="hover-lift"
+          onClick={() => handleFilterChange('easy')}
         >
-          😊 Хялбар ({difficultyCounts.easy})
+          Easy ({difficultyCounts.easy})
         </Button>
         <Button
           size="sm"
           variant={filter === 'medium' ? 'warning' : 'ghost'}
-          onClick={() => setFilter('medium')}
-          className="hover-lift"
+          onClick={() => handleFilterChange('medium')}
         >
-          🤔 Дунд ({difficultyCounts.medium})
+          Medium ({difficultyCounts.medium})
         </Button>
         <Button
           size="sm"
           variant={filter === 'hard' ? 'danger' : 'ghost'}
-          onClick={() => setFilter('hard')}
-          className="hover-lift"
+          onClick={() => handleFilterChange('hard')}
         >
-          🔥 Хэцүү ({difficultyCounts.hard})
+          Hard ({difficultyCounts.hard})
         </Button>
       </div>
 
@@ -103,78 +109,99 @@ export const LevelList = memo(({ onStartLevel, completedLevels }: LevelListProps
             variant="default"
             padding="md"
             hover
-            className={`relative overflow-hidden border-2 hover-lift transition-all duration-300 ${
+            className={`relative overflow-hidden border rounded-md flex flex-col transition-all ${
               isCompleted
-                ? 'border-green-400 bg-gradient-to-br from-green-50 via-emerald-50 to-teal-50 shadow-lg'
+                ? 'border-success-500 bg-bg-secondary'
                 : isTutorial
-                ? 'border-blue-400 bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 shadow-lg animate-pulse-glow'
-                : 'border-purple-200 hover:border-purple-300 bg-white'
+                ? 'border-primary-500 bg-bg-secondary'
+                : 'border-border-primary bg-bg-secondary hover:border-primary-400'
             }`}
           >
-            {/* Completion Badge */}
-            {isCompleted && (
-              <div className="absolute top-3 right-3 w-10 h-10 bg-gradient-to-br from-green-400 to-emerald-600 rounded-full flex items-center justify-center shadow-xl z-10 animate-bounce-gentle">
-                <span className="text-white text-lg">✨</span>
+            {/* Status Indicator - LeetCode style */}
+            {(isCompleted || isTutorial) && (
+              <div className={`absolute top-3 right-3 w-6 h-6 rounded-full flex items-center justify-center z-10 ${
+                isCompleted
+                  ? 'bg-success-500'
+                  : 'bg-primary-500'
+              }`}>
+                <span className="text-white text-xs font-bold">
+                  {isCompleted ? '✓' : '★'}
+                </span>
               </div>
             )}
 
-            <div>
-              <div className="flex items-start justify-between mb-3">
-                <h3 className="font-bold text-lg text-gray-900 pr-8 flex items-center gap-2">
-                  {isTutorial && <span className="text-2xl">🎓</span>}
-                  {level.name}
-                </h3>
+            <div className="relative z-10 flex flex-col flex-1">
+              {/* Header Section - LeetCode style */}
+              <div className="flex items-start justify-between mb-3 pr-10">
+                <div className="flex-1 min-w-0">
+                  <h3 className={`font-semibold text-base mb-2 ${
+                    isCompleted ? 'text-success' : isTutorial ? 'text-primary-400' : 'text-text-primary'
+                  }`}>
+                    {level.name}
+                  </h3>
+                  {/* Difficulty Badge - LeetCode style */}
+                  {level.difficulty && (
+                    <Badge 
+                      variant={getDifficultyVariant(level.difficulty)} 
+                      size="sm"
+                      className="mt-1"
+                    >
+                      {getDifficultyLabel(level.difficulty)}
+                    </Badge>
+                  )}
+                </div>
               </div>
 
-              {level.difficulty && (
-                <Badge 
-                  variant={getDifficultyVariant(level.difficulty)} 
-                  size="sm" 
-                  className="mb-3 shadow-md"
-                >
-                  {getDifficultyLabel(level.difficulty)}
-                </Badge>
-              )}
-
-              <p className="text-gray-600 text-sm mb-4 leading-relaxed line-clamp-2">
+              {/* Description - LeetCode style */}
+              <p className="text-sm mb-4 leading-relaxed line-clamp-2 text-text-secondary flex-1">
                 {level.description}
               </p>
 
+              {/* Info - LeetCode style */}
+              <div className="flex items-center gap-3 mb-4 text-xs text-text-secondary">
+                {level.minSteps && level.maxSteps && (
+                  <span>Steps: {level.minSteps}-{level.maxSteps}</span>
+                )}
+                {level.requiredActions && level.requiredActions.length > 0 && (
+                  <span>•</span>
+                )}
+                {level.requiredActions && level.requiredActions.length > 0 && (
+                  <span>{level.requiredActions.length} actions</span>
+                )}
+              </div>
+
+              {/* Hints Section - LeetCode style */}
               {level.hints && level.hints.length > 0 && (
-                <details className="mb-4">
-                  <summary className="text-sm text-purple-600 cursor-pointer hover:text-purple-800 font-medium list-none transition-colors">
-                    <span className="flex items-center gap-1">
-                      <span className="text-lg">💡</span>
-                      <span>Зааварчилгаа</span>
+                <details className="mb-4 group/details">
+                  <summary className="text-sm cursor-pointer font-medium list-none py-2 text-primary-400 hover:text-primary-300 transition-colors">
+                    <span className="flex items-center gap-2">
+                      <span>Hints ({level.hints.length})</span>
+                      <span className="ml-auto text-xs opacity-60 group-open/details:rotate-180 transition-transform">
+                        ▼
+                      </span>
                     </span>
                   </summary>
-                  <ul className="mt-3 text-xs text-gray-600 space-y-1.5 pl-4">
+                  <ul className="mt-3 text-xs space-y-2 pl-4 text-text-secondary">
                     {level.hints.map((hint, idx) => (
                       <li key={idx} className="flex items-start gap-2">
-                        <span className="text-purple-500 mt-0.5 text-base">✨</span>
-                        <span>{hint}</span>
+                        <span className="mt-0.5 flex-shrink-0 text-primary-400">•</span>
+                        <span className="flex-1">{hint}</span>
                       </li>
                     ))}
                   </ul>
                 </details>
               )}
 
+              {/* Action Button - LeetCode style */}
               <Button
                 fullWidth
                 variant={
                   isTutorial ? 'primary' : isCompleted ? 'success' : 'secondary'
                 }
-                leftIcon={isTutorial ? '🎯' : isCompleted ? '🔄' : '▶️'}
-                onClick={() => onStartLevel(level.id)}
-                onMouseEnter={() => {
-                  // Preload Game component on hover
-                  if (typeof window !== 'undefined') {
-                    import('../pages/Game');
-                  }
-                }}
-                className="shadow-md hover:shadow-xl transition-all duration-300"
+                onClick={() => handleLevelClick(level.id)}
+                className="mt-auto"
               >
-                {isTutorial ? 'Заавар эхлүүлэх' : isCompleted ? 'Дахин тоглох' : 'Эхлэх'}
+                {isTutorial ? 'Start Tutorial' : isCompleted ? 'Retry' : 'Start'}
               </Button>
             </div>
           </Card>
@@ -182,9 +209,8 @@ export const LevelList = memo(({ onStartLevel, completedLevels }: LevelListProps
       })}
       </div>
       {filteredLevels.length === 0 && (
-        <div className="text-center py-12">
-          <div className="text-6xl mb-4">🔍</div>
-          <p className="text-gray-600 text-lg">Түвшин олдсонгүй</p>
+        <div className="text-center py-12 rounded border border-border-primary bg-bg-secondary">
+          <p className="text-text-secondary text-lg">No problems found</p>
         </div>
       )}
     </div>

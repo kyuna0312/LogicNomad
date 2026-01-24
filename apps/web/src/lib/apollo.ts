@@ -7,13 +7,17 @@ import { setContext } from '@apollo/client/link/context';
 import { onError } from '@apollo/client/link/error';
 import type { GraphQLError } from 'graphql';
 
+import { API_ENDPOINTS } from '../utils/constants';
+
 const httpLink = createHttpLink({
-  uri: import.meta.env.VITE_GRAPHQL_URL || import.meta.env.VITE_API_URL || 'http://localhost:3000/graphql',
+  uri: API_ENDPOINTS.GRAPHQL,
 });
+
+import { STORAGE_KEYS } from '../utils/constants';
 
 // Auth link to add token to headers
 const authLink = setContext((_, { headers }) => {
-  const token = localStorage.getItem('auth_token');
+  const token = localStorage.getItem(STORAGE_KEYS.AUTH_TOKEN);
   return {
     headers: {
       ...headers,
@@ -41,12 +45,26 @@ const errorLink = onError((errorHandler) => {
 
   if (networkError) {
     if (import.meta.env.DEV) {
-      console.error(`[Network error]: ${networkError}`);
+      // More detailed error logging in development
+      const errorMessage = networkError.message || 'Unknown network error';
+      const statusCode = 'statusCode' in networkError ? networkError.statusCode : 'N/A';
+      
+      // Check if it's a CORS or connection error
+      if (errorMessage.includes('CORS') || errorMessage.includes('Failed to fetch') || statusCode === null) {
+        console.error(
+          `[Network error]: Cannot connect to API server.\n` +
+          `  - Make sure the API server is running on ${API_ENDPOINTS.GRAPHQL}\n` +
+          `  - Check if CORS is properly configured\n` +
+          `  - Error: ${errorMessage}`
+        );
+      } else {
+        console.error(`[Network error]: ${errorMessage} (Status: ${statusCode})`);
+      }
     }
     
     // Handle 401 unauthorized
     if ('statusCode' in networkError && networkError.statusCode === 401) {
-      localStorage.removeItem('auth_token');
+      localStorage.removeItem(STORAGE_KEYS.AUTH_TOKEN);
       window.location.href = '/';
     }
   }
@@ -59,19 +77,41 @@ export const apolloClient = new ApolloClient({
       Query: {
         fields: {
           me: {
-            merge: true,
+            merge(existing, incoming) {
+              return incoming || existing;
+            },
             // Cache for 5 minutes
             read(existing) {
-              return existing;
+              if (existing && Date.now() - (existing._cacheTime || 0) < 5 * 60 * 1000) {
+                return existing;
+              }
+              return undefined;
             },
           },
           getProgress: {
-            merge: true,
+            merge(existing, incoming) {
+              return incoming || existing;
+            },
             // Cache for 1 minute
             read(existing) {
-              return existing;
+              if (existing && Date.now() - (existing._cacheTime || 0) < 60 * 1000) {
+                return existing;
+              }
+              return undefined;
             },
           },
+        },
+      },
+      User: {
+        keyFields: ['id'],
+        merge(existing, incoming) {
+          return { ...existing, ...incoming };
+        },
+      },
+      UserProgress: {
+        keyFields: ['userId'],
+        merge(existing, incoming) {
+          return { ...existing, ...incoming };
         },
       },
     },
@@ -83,6 +123,8 @@ export const apolloClient = new ApolloClient({
       errorPolicy: 'all',
       fetchPolicy: 'cache-and-network', // Better UX with cache
       notifyOnNetworkStatusChange: true,
+      // Optimize polling
+      pollInterval: 0, // Disable polling by default
     },
     query: {
       errorPolicy: 'all',
@@ -90,6 +132,8 @@ export const apolloClient = new ApolloClient({
     },
     mutate: {
       errorPolicy: 'all',
+      // Optimize mutations
+      awaitRefetchQueries: false,
     },
   },
   // Performance optimizations
