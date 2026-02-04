@@ -20,7 +20,7 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@apollo/server": "^5.2.0",
+    "@apollo/server": "^5.4.0",
     "@as-integrations/express5": "^1.1.2",
     "@logicnomad/engine": "*",
     "@nestjs/apollo": "^13.2.3",
